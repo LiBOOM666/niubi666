@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>老子要放假了！</title>
+    <title>漂亮宝贝放假倒计时</title>
     <style>
         * {
             margin: 0;
@@ -63,12 +63,19 @@
             letter-spacing: 0.5px;
         }
         
-        .days-container {
+        .days-display {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             padding-bottom: 1.5rem;
+        }
+        
+        .days-content {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            transform: translateY(-10px);
         }
         
         .days-number {
@@ -81,9 +88,7 @@
         .days-unit {
             font-size: 2rem;
             color: #2c3e50;
-            margin-left: 0.5rem;
-            align-self: flex-end;
-            margin-bottom: 0.8rem;
+            margin-left: 0.3rem;
             font-weight: 500;
         }
         
@@ -122,7 +127,6 @@
             
             .days-unit {
                 font-size: 1.8rem;
-                margin-bottom: 0.7rem;
             }
             
             .encouragement {
@@ -133,14 +137,16 @@
     </style>
 </head>
 <body>
-    <h1>老子要放假了！</h1>
+    <h1>漂亮宝贝放假倒计时</h1>
     
     <div class="calendar-container">
         <div class="calendar-page">
             <div class="calendar-header">距离放假还有</div>
-            <div class="days-container">
-                <span class="days-number" id="days-left">0</span>
-                <span class="days-unit">天</span>
+            <div class="days-display">
+                <div class="days-content">
+                    <span class="days-number" id="days-left">0</span>
+                    <span class="days-unit">天</span>
+                </div>
             </div>
         </div>
     </div>
