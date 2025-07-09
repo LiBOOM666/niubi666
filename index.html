@@ -21,6 +21,8 @@
             padding: 20px 15px;
             color: #5a3d4a;
             -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+            position: relative;
         }
         
         h1 {
@@ -36,6 +38,8 @@
             width: 100%;
             max-width: 320px;
             margin: 1rem 0 2.5rem;
+            position: relative;
+            z-index: 10;
         }
         
         .calendar-page {
@@ -92,7 +96,7 @@
             font-weight: 500;
         }
         
-        .encouragement {
+        .encouragement-btn {
             width: 100%;
             max-width: 320px;
             background-color: white;
@@ -105,6 +109,16 @@
             line-height: 1.6;
             margin: 1rem 0;
             border-left: 4px solid #ff6b81;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 10;
+            position: relative;
+        }
+        
+        .encouragement-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         
         .target-date {
@@ -112,6 +126,28 @@
             color: #a8a8a8;
             font-size: 0.9rem;
             text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+        
+        .celebration {
+            position: absolute;
+            pointer-events: none;
+            animation: flyThrough 2s ease-out forwards;
+            z-index: 5;
+            user-select: none;
+            will-change: transform, opacity;
+        }
+        
+        @keyframes flyThrough {
+            0% {
+                transform: translate(var(--start-x), var(--start-y)) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--end-x), var(--end-y)) scale(0.8) rotate(var(--rotate));
+                opacity: 0;
+            }
         }
         
         /* 小屏幕适配 */
@@ -129,7 +165,7 @@
                 font-size: 1.8rem;
             }
             
-            .encouragement {
+            .encouragement-btn {
                 font-size: 1rem;
                 padding: 1.2rem;
             }
@@ -140,7 +176,7 @@
     <h1>漂亮宝贝放假倒计时</h1>
     
     <div class="calendar-container">
-        <div class="calendar-page">
+        <div class="calendar-page" id="calendar-page">
             <div class="calendar-header">距离放假还有</div>
             <div class="days-display">
                 <div class="days-content">
@@ -151,7 +187,7 @@
         </div>
     </div>
     
-    <div class="encouragement" id="encouragement"></div>
+    <button class="encouragement-btn" id="encouragement-btn"></button>
     
     <div class="target-date">目标放假日期：2025年7月17日</div>
     
@@ -160,11 +196,11 @@
         const encouragements = [
             "小仙女再坚持一下下，假期就要来啦~",
             "你是最可爱的宝贝，一定能等到放假那天！",
-            "每天都是向假期靠近的一小步呢✨",
+            "每天都是向假期靠近的一小步呢",
             "想象一下放假后美美的样子，现在的一切都值得！",
             "时间在偷偷帮你倒数呢，很快就能放松啦~",
             "这么可爱的你，值得一个完美的假期！",
-            "每天都是新的开始，离假期又近了一天哦🌸",
+            "每天都是新的开始，离假期又近了一天哦",
             "你是闪闪发光的小公主，假期正在向你奔来~",
             "现在的努力都是在为假期积攒快乐能量！",
             "保持微笑，你笑起来的样子最美啦~",
@@ -177,13 +213,13 @@
             "时间在流逝，但假期也越来越近啦",
             "现在的付出会让假期更加甜蜜哦",
             "倒数计时已经开始，你是最棒的！",
-            "每一天都是通往假期的小彩虹🌈",
+            "每一天都是通往假期的小彩虹",
             "你是最特别的女孩，值得最美好的假期~",
             "保持优雅，假期就在转角处等着你呢",
             "现在的每一分钟都在编织假期的美好",
             "你是生活的小甜心，假期马上就来宠你啦",
             "数着日子过，每一天都离假期更近一点",
-            "你是最闪耀的星星，假期为你而准备✨",
+            "你是最闪耀的星星，假期为你而准备",
             "现在的辛苦都会变成假期的加倍快乐",
             "保持可爱，假期正在加速赶来~",
             "你是最值得被宠爱的小公主呀",
@@ -199,6 +235,12 @@
             "时间在帮你收集假期的每一份期待",
             "现在的每一秒都在靠近属于你的假期"
         ];
+
+        // 庆祝表情数组(精选)
+        const celebrationEmojis = ["🎉", "🎊", "✨", "🌸", "💖", "🎈", "🥳", "👑", "🎁", "🏆"];
+        
+        // 表情大小选项(px)
+        const emojiSizes = [106, 150, 200, 265];
         
         // 计算剩余天数
         function calculateDaysLeft() {
@@ -209,18 +251,103 @@
             return daysLeft > 0 ? daysLeft : 0;
         }
         
+        // 创建庆祝表情
+        function createCelebration() {
+            const calendarPage = document.getElementById('calendar-page');
+            const calendarRect = calendarPage.getBoundingClientRect();
+            const emoji = celebrationEmojis[Math.floor(Math.random() * celebrationEmojis.length)];
+            
+            // 生成10-15个表情
+            const count = 10 + Math.floor(Math.random() * 6);
+            
+            for (let i = 0; i < count; i++) {
+                const celebration = document.createElement('div');
+                celebration.className = 'celebration';
+                celebration.textContent = emoji;
+                
+                // 随机选择表情大小
+                const size = emojiSizes[Math.floor(Math.random() * emojiSizes.length)];
+                
+                // 起始位置(日历卡片四周±20px范围内)
+                const edge = Math.floor(Math.random() * 4); // 0:上,1:右,2:下,3:左
+                let startX, startY;
+                const offset = 20; // 轮廓区域范围
+                
+                // 计算相对于日历卡片的位置
+                const relativeX = Math.random() * calendarRect.width;
+                const relativeY = Math.random() * calendarRect.height;
+                
+                switch(edge) {
+                    case 0: // 上边
+                        startX = relativeX;
+                        startY = -offset + Math.random() * offset;
+                        break;
+                    case 1: // 右边
+                        startX = calendarRect.width + Math.random() * offset;
+                        startY = relativeY;
+                        break;
+                    case 2: // 下边
+                        startX = relativeX;
+                        startY = calendarRect.height + Math.random() * offset;
+                        break;
+                    case 3: // 左边
+                        startX = -offset + Math.random() * offset;
+                        startY = relativeY;
+                        break;
+                }
+                
+                // 计算终点位置(随机方向弹射)
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 300 + Math.random() * 200;
+                const endX = startX + Math.cos(angle) * distance;
+                const endY = startY + Math.sin(angle) * distance;
+                
+                // 随机旋转角度
+                const rotate = (Math.random() - 0.5) * 360;
+                
+                celebration.style.fontSize = `${size}px`;
+                celebration.style.setProperty('--start-x', `${startX}px`);
+                celebration.style.setProperty('--start-y', `${startY}px`);
+                celebration.style.setProperty('--end-x', `${endX - startX}px`);
+                celebration.style.setProperty('--end-y', `${endY - startY}px`);
+                celebration.style.setProperty('--rotate', `${rotate}deg`);
+                
+                // 添加到日历卡片中
+                calendarPage.appendChild(celebration);
+                
+                // 动画结束后移除元素
+                celebration.addEventListener('animationend', () => {
+                    celebration.remove();
+                });
+            }
+        }
+        
+        // 更新鼓励语句
+        function updateEncouragement() {
+            const randomIndex = Math.floor(Math.random() * encouragements.length);
+            document.getElementById('encouragement-btn').textContent = encouragements[randomIndex];
+        }
+        
+        // 初始化页面
+        function init() {
+            updateEncouragement();
+            updateCountdown();
+            
+            // 点击按钮事件
+            document.getElementById('encouragement-btn').addEventListener('click', () => {
+                updateEncouragement();
+                createCelebration();
+            });
+        }
+        
         // 更新倒计时显示
         function updateCountdown() {
             const daysLeft = calculateDaysLeft();
             document.getElementById('days-left').textContent = daysLeft;
-            
-            // 随机选择一条鼓励语句
-            const randomIndex = Math.floor(Math.random() * encouragements.length);
-            document.getElementById('encouragement').textContent = encouragements[randomIndex];
         }
         
         // 页面加载时初始化
-        window.addEventListener('DOMContentLoaded', updateCountdown);
+        window.addEventListener('DOMContentLoaded', init);
         
         // 每天更新一次
         setInterval(updateCountdown, 24 * 60 * 60 * 1000);
