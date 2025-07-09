@@ -13,13 +13,13 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 15px;
-            color: #333;
+            color: #5a3d4a;
             -webkit-tap-highlight-color: transparent;
         }
         
@@ -27,7 +27,7 @@
             font-size: 1.8rem;
             margin: 1.5rem 0;
             text-align: center;
-            color: #2c3e50;
+            color: #d23669;
             font-weight: 600;
             text-shadow: 0 1px 1px rgba(0,0,0,0.1);
         }
@@ -53,7 +53,7 @@
         .calendar-header {
             width: 100%;
             height: 3.5rem;
-            background-color: #e74c3c;
+            background-color: #ff6b81;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -81,13 +81,13 @@
         .days-number {
             font-size: 5.5rem;
             font-weight: 700;
-            color: #2c3e50;
+            color: #d23669;
             line-height: 1;
         }
         
         .days-unit {
             font-size: 2rem;
-            color: #2c3e50;
+            color: #d23669;
             margin-left: 0.3rem;
             font-weight: 500;
         }
@@ -101,15 +101,15 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             text-align: center;
             font-size: 1.1rem;
-            color: #555;
+            color: #5a3d4a;
             line-height: 1.6;
             margin: 1rem 0;
-            border-left: 4px solid #e74c3c;
+            border-left: 4px solid #ff6b81;
         }
         
         .target-date {
             margin-top: 1.5rem;
-            color: #7f8c8d;
+            color: #a8a8a8;
             font-size: 0.9rem;
             text-align: center;
         }
@@ -156,28 +156,48 @@
     <div class="target-date">目标放假日期：2025年7月17日</div>
     
     <script>
-        // 鼓励语句数组
+        // 女生专属鼓励语句(40条)
         const encouragements = [
-            "坚持就是胜利，假期就在眼前！",
-            "每一天的努力都是通向假期的台阶！",
-            "你已经走了这么远，再坚持一下！",
-            "想象一下放假时的轻松，现在的辛苦都值得！",
-            "时间就像沙漏，每一粒沙都在带你接近假期！",
-            "你是最棒的，一定能坚持到放假那天！",
-            "工作是为了更好的休息，假期即将到来！",
-            "数着日子过，假期越来越近了！",
-            "现在的每一分钟都在缩短你与假期的距离！",
-            "保持微笑，假期正在向你招手！",
-            "你是时间的主宰，假期终将到来！",
-            "把每一天当作倒数，假期就在不远处！",
-            "坚持住，假期后的你会感谢现在的自己！",
-            "工作与休息的平衡就在眼前！",
-            "每一秒的坚持都在绘制假期的蓝图！",
-            "放松的心情从期待假期开始！",
-            "你是坚韧的战士，假期是你的奖赏！",
-            "时间在流逝，假期在接近！",
-            "现在的付出是为了假期的加倍快乐！",
-            "倒数计时已经开始，坚持就是胜利！"
+            "小仙女再坚持一下下，假期就要来啦~",
+            "你是最可爱的宝贝，一定能等到放假那天！",
+            "每天都是向假期靠近的一小步呢✨",
+            "想象一下放假后美美的样子，现在的一切都值得！",
+            "时间在偷偷帮你倒数呢，很快就能放松啦~",
+            "这么可爱的你，值得一个完美的假期！",
+            "每天都是新的开始，离假期又近了一天哦🌸",
+            "你是闪闪发光的小公主，假期正在向你奔来~",
+            "现在的努力都是在为假期积攒快乐能量！",
+            "保持微笑，你笑起来的样子最美啦~",
+            "每一天都在绘制属于你的假期蓝图呢",
+            "你是时间的小魔法师，假期马上就到啦",
+            "把每一天都当作小确幸，假期就是大惊喜！",
+            "坚持住，假期后的你会感谢现在努力的自己",
+            "放松心情，美好的假期正在路上呢~",
+            "你是最勇敢的小仙女，假期是你的奖励！",
+            "时间在流逝，但假期也越来越近啦",
+            "现在的付出会让假期更加甜蜜哦",
+            "倒数计时已经开始，你是最棒的！",
+            "每一天都是通往假期的小彩虹🌈",
+            "你是最特别的女孩，值得最美好的假期~",
+            "保持优雅，假期就在转角处等着你呢",
+            "现在的每一分钟都在编织假期的美好",
+            "你是生活的小甜心，假期马上就来宠你啦",
+            "数着日子过，每一天都离假期更近一点",
+            "你是最闪耀的星星，假期为你而准备✨",
+            "现在的辛苦都会变成假期的加倍快乐",
+            "保持可爱，假期正在加速赶来~",
+            "你是最值得被宠爱的小公主呀",
+            "每一天都在为假期积攒小幸运",
+            "现在的坚持会让假期更加难忘呢",
+            "你是最棒的女孩，假期在向你招手~",
+            "时间在悄悄帮你缩短与假期的距离",
+            "现在的努力会让假期更加自由自在",
+            "你是最美好的存在，假期为你绽放~",
+            "每一天都是通向假期的小确幸",
+            "现在的等待会让假期更加珍贵",
+            "你是最独特的小仙女，假期专属定制~",
+            "时间在帮你收集假期的每一份期待",
+            "现在的每一秒都在靠近属于你的假期"
         ];
         
         // 计算剩余天数
